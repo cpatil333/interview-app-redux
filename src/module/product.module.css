@@ -1,0 +1,84 @@
+table {
+  width: 100%;
+  height: auto;
+  font-size: 16px;
+  background-color: white;
+  color: black;
+}
+tbody tr td {
+  border: 1px solid black;
+}
+table tr td img {
+  width: 20px;
+}
+.searchCategory {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 50%;
+  background-color: white;
+  padding: 10px;
+  color: black;
+  font-size: 16px;
+}
+
+select {
+  width: 20%;
+  background-color: white;
+  padding: 10px;
+  color: black;
+  font-size: 16px;
+}
+.btn {
+  background-color: rgb(39, 10, 155);
+  color: white;
+}
+
+.productForm {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  color: black;
+}
+.lableInputDiv {
+  margin-bottom: 15px;
+}
+.lableInputDiv input {
+  width: 450px;
+  padding: 10px;
+  outline: none;
+  color: black;
+}
+
+.lableInputDiv textarea {
+  width: 450px;
+  padding: 10px;
+  height: 150px;
+  outline: none;
+  color: black;
+  background-color: white;
+}
+
+.lableInputDiv select {
+  width: 450px;
+  padding: 10px;
+  outline: none;
+  color: black;
+  background-color: white;
+}
+
+.lableInputDiv button {
+  width: 150px;
+  padding: 10px;
+  outline: none;
+  color: white;
+  font-size: 18px;
+  background-color: purple;
+}
