@@ -25,6 +25,10 @@ function App() {
           element: <CartForm />,
         },
         {
+          path: "/cart-form/:id",
+          element: <CartForm />,
+        },
+        {
           path: "/product-form",
           element: <AddProduct />,
         },

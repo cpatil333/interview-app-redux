@@ -7,6 +7,8 @@ import { setProducts } from "../../features/products/productSlice";
 import { type AppDispatch, type RootState } from "../../app/store";
 import { getProducts } from "../../services/productServices";
 import { CheckCartFormData } from "../../utilis/CheckCartFormData";
+import { getCart } from "../../services/cartServices";
+import { fetchSingleCart } from "../../features/cart/cartSlice";
 
 const CartForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,6 +50,26 @@ const CartForm = () => {
     fetchData();
   }, [dispatch]);
 
+  useEffect(() => {
+    if (id) {
+      const fetchCart = async () => {
+        const response = dispatch(fetchSingleCart(Number(id)));
+        const data = (await response).payload;
+        console.log(data);
+        if (data) {
+          setInputValue({
+            id: data.id,
+            userId: data.userId,
+            date: data.date,
+            productId: data.products[0].productId,
+            quantity: data.products[0].quantity,
+          });
+        }
+      };
+      fetchCart();
+    }
+  }, [id, dispatch]);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validInput = {
@@ -59,9 +81,9 @@ const CartForm = () => {
     if (!isValid) {
       return;
     }
-    
   };
 
+  console.log(inputValue);
   const handleChangeInput = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {

@@ -1,5 +1,4 @@
 import { api } from "../api/apiProduct";
-import type { Cart } from "../types/Cart";
 
 export const getCarts = async () => {
   try {
@@ -34,6 +33,16 @@ export const addCart = async (cart: any) => {
 export const updateCart = async (cart: any) => {
   try {
     const response = await api.put(`/carts/${cart.id}`, { body: cart });
+    const data = await response.data;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteCart = async (id: any) => {
+  try {
+    const response = await api.delete(`/carts/${id}`);
     const data = await response.data;
     return data;
   } catch (error) {

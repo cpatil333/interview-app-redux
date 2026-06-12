@@ -4,7 +4,7 @@ import styles from "../../module/product.module.css";
 import type { Cart } from "../../types/Cart";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchCarts } from "../../features/cart/cartSlice";
+import { fetchCarts, removeCart } from "../../features/cart/cartSlice";
 import { fetchUsers } from "../../features/user/userSlice";
 import type { User } from "../../types/User";
 
@@ -19,7 +19,18 @@ const CartList = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  console.log(cartData);
+  // console.log(cartData);
+
+  const handleDelete = async (id: number) => {
+    try {
+      dispatch(removeCart(id));
+      alert("Cart removed!");
+      navigate("/cart-list");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className={styles.searchCategory}>
@@ -63,7 +74,7 @@ const CartList = () => {
                   </button>{" "}
                   <button
                     style={{ padding: "10px" }}
-                    // onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDelete(item.id)}
                   >
                     Delete
                   </button>

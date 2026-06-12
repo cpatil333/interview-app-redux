@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { CartState } from "../../types/CartState";
-import type { Cart } from "../../types/Cart";
+
 import {
   addCart,
+  deleteCart,
   getCart,
   getCarts,
   updateCart,
@@ -35,7 +36,7 @@ const fetchCarts = createAsyncThunk(
 
 const fetchSingleCart = createAsyncThunk(
   "cart/fetchSingleCart",
-  async (cartId, { rejectWithValue }) => {
+  async (cartId: number, { rejectWithValue }) => {
     try {
       const response = await getCart(Number(cartId));
       return await response;
@@ -54,7 +55,7 @@ const postCart = createAsyncThunk(
   async (cart, { rejectWithValue }) => {
     try {
       const response = await addCart(cart);
-      return response;
+      return await response;
     } catch (error) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
@@ -70,7 +71,7 @@ const editCart = createAsyncThunk(
   async (cart, { rejectWithValue }) => {
     try {
       const response = await updateCart(cart);
-      return response;
+      return await response;
     } catch (error) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
@@ -80,6 +81,23 @@ const editCart = createAsyncThunk(
     }
   },
 );
+
+const removeCart = createAsyncThunk(
+  "cart/deleteCart",
+  async (cartId: number, { rejectWithValue }) => {
+    try {
+      const response = await deleteCart(Number(cartId));
+      return await response;
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      } else {
+        return rejectWithValue("Something went wrong!");
+      }
+    }
+  },
+);
+
 export const CartSlice = createSlice({
   name: "cart",
   initialState,
@@ -107,7 +125,8 @@ export const CartSlice = createSlice({
     });
     addBuilder.addCase(fetchSingleCart.fulfilled, (state, action) => {
       state.loading = false;
-      state.getSelectedCart = action.payload;
+      state.getSelectedCart =
+        state.carts.find((item) => item.id === action.payload.id) ?? null;
     });
     addBuilder.addCase(fetchSingleCart.rejected, (state, action) => {
       state.loading = false;
@@ -141,9 +160,23 @@ export const CartSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
+
+    //delete  single cart
+    addBuilder.addCase(removeCart.pending, (state, action) => {
+      state.loading = true;
+      state.error = null;
+    });
+    addBuilder.addCase(removeCart.fulfilled, (state, action) => {
+      state.loading = false;
+      state.carts = state.carts.filter((item) => item.id !== action.payload.id);
+    });
+    addBuilder.addCase(removeCart.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
   },
 });
 
 export const {} = CartSlice.actions;
-export { fetchCarts, fetchSingleCart, postCart, editCart };
+export { fetchCarts, fetchSingleCart, postCart, editCart, removeCart };
 export default CartSlice.reducer;
